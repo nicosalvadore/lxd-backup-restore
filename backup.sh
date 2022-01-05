@@ -4,7 +4,7 @@
 # Forked from https://github.com/triopsi/backup_all_lxc
 #---------------------------------------------------------------------
 errorAndQuit() {
-    logmsg "Exit now!"
+    logmsg "Exiting now!"
     exit 1
 }
 
@@ -16,7 +16,7 @@ logmsg() {
 export PATH=$PATH:/snap/bin
 
 #Edit the path to the backup directory
-BACKUPDIR="/backup/data"
+BACKUPDIR="/mnt/nas/lxd-backups"
 
 BACKUPSTARTDATE=$(date +'%F %T')
 BACKUPDATE=$(date +%F)
@@ -24,8 +24,8 @@ LXC=$(which lxc)
 lxclist=$(lxc list --format csv -c n)
 
 if [ ! -d $BACKUPDIR ];then
-    mkdir -p $BACKUPDIR
-    logmsg "[✓] Backupdir is created"
+    logmsg "[E] Backupdir is not available"
+    errorAndQuit
 fi
 logmsg "[-] Starting backup at $BACKUPSTARTDATE"
 for container in $lxclist
